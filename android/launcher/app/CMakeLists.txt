@@ -20,6 +20,7 @@ message(" ")
 # ────────────────────────────────────────────────────────────────────────────────
 # 🔖 Project Metadata Setup
 # ────────────────────────────────────────────────────────────────────────────────
+
 set(REVC_PROJECT_NAME "reVC")
 set(REVC_VERSION 0.0.1)
 set(REVC_DESCRIPTION "reverted ${REVC_PROJECT_NAME}")
@@ -34,22 +35,37 @@ project(${REVC_PROJECT_NAME}
 # ────────────────────────────────────────────────────────────────────────────────
 # 📂 Define Important Directory Paths
 # ────────────────────────────────────────────────────────────────────────────────
+
 get_filename_component(REVC_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}" ABSOLUTE)
 set(REVC_GAME_DIR "${REVC_ROOT_DIR}/../../../")
+
 message(" *  📂 Game source directory set to: ${REVC_GAME_DIR}")
 
 # ────────────────────────────────────────────────────────────────────────────────
 # ➕ Add Game Subdirectory If Available
 # ────────────────────────────────────────────────────────────────────────────────
+
 if(IS_DIRECTORY "${REVC_GAME_DIR}" AND EXISTS "${REVC_GAME_DIR}/CMakeLists.txt")
+
     message(" *  ➕ Including Game module from: ${REVC_GAME_DIR}")
     message(" ")
+
     message("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
     message(" *  🚀 Initiating Game module build configuration...")
     message("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━")
     message(" ")
-    #add_subdirectory(${REVC_GAME_DIR} ${CMAKE_BINARY_DIR}/game_build)
+
+    add_subdirectory(
+        ${REVC_GAME_DIR}
+        ${CMAKE_BINARY_DIR}/game_build
+    )
+
 else()
+
     message(" *  ⚠️ Game source directory or CMakeLists.txt not found at: ${REVC_GAME_DIR}")
-    message(FATAL_ERROR " *  ❗ Please ensure the game module sources are available for the build.")
+
+    message(FATAL_ERROR
+        " *  ❗ Please ensure the game module sources are available for the build."
+    )
+
 endif()
