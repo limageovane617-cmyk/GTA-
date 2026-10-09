@@ -37,7 +37,7 @@ project(${REVC_PROJECT_NAME}
 # ────────────────────────────────────────────────────────────────────────────────
 
 get_filename_component(REVC_ROOT_DIR "${CMAKE_CURRENT_SOURCE_DIR}" ABSOLUTE)
-set(REVC_GAME_DIR "${REVC_ROOT_DIR}/../../../")
+set(REVC_GAME_DIR "${REVC_ROOT_DIR}/../../../../")
 
 message(" *  📂 Game source directory set to: ${REVC_GAME_DIR}")
 
