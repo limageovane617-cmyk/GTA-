@@ -218,8 +218,6 @@ endif()
 
 option(${PROJECT}_VENDORED_LIBRW "Use vendored librw" ON)
 
-
-    PROJECT}_VENDORED_LIBRW "Use vendored librw" ON)
 if(${PROJECT}_VENDORED_LIBRW)
     if(NOT DEFINED LIBRW_PLATFORM AND NOT PS2)
         set(LIBRW_PLATFORM "GL3" CACHE STRING "librw platform")
