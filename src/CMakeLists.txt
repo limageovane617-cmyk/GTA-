@@ -118,12 +118,19 @@ elseif(${PROJECT}_AUDIO STREQUAL "MSS")
     target_link_libraries(${EXECUTABLE} PRIVATE MilesSDK::MilesSDK)
 endif()
 
-if(NOT TARGET MPG123::libmpg123)
-    find_package(mpg123 REQUIRED)
+
+# mpg123 is required for desktop builds.
+# Android does not enable AUDIO_OAL_USE_MPG123.
+if(NOT ANDROID)
+    if(NOT TARGET MPG123::libmpg123)
+        find_package(mpg123 REQUIRED)
+    endif()
+
+    target_link_libraries(${EXECUTABLE} PRIVATE
+        MPG123::libmpg123
+    )
 endif()
-target_link_libraries(${EXECUTABLE} PRIVATE
-    MPG123::libmpg123
-)
+
 if(${PROJECT}_WITH_OPUS)
     find_package(opusfile REQUIRED)
     target_link_libraries(${EXECUTABLE} PRIVATE
