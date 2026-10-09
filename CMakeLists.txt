@@ -174,6 +174,25 @@ if(NOT ${PROJECT}_AUDIO IN_LIST ${PROJECT}_AUDIOS)
     message(FATAL_ERROR "Illegal ${PROJECT}_AUDIO=${${PROJECT}_AUDIO}")
 endif()
 
+# Build native SDL2 for Android before configuring librw.
+if(ANDROID)
+    include(FetchContent)
+
+    set(SDL_SHARED ON CACHE BOOL "" FORCE)
+    set(SDL_STATIC OFF CACHE BOOL "" FORCE)
+    set(SDL_TEST OFF CACHE BOOL "" FORCE)
+    set(SDL2_DISABLE_SDL2MAIN ON CACHE BOOL "" FORCE)
+
+    FetchContent_Declare(
+        SDL2
+        GIT_REPOSITORY https://github.com/libsdl-org/SDL.git
+        GIT_TAG release-2.32.10
+        GIT_SHALLOW TRUE
+    )
+
+    FetchContent_MakeAvailable(SDL2)
+endif()
+
 option(${PROJECT}_VENDORED_LIBRW "Use vendored librw" ON)
 if(${PROJECT}_VENDORED_LIBRW)
     if(NOT DEFINED LIBRW_PLATFORM AND NOT PS2)
