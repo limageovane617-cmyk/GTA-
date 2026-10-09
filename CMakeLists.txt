@@ -193,6 +193,40 @@ if(ANDROID)
     FetchContent_MakeAvailable(SDL2)
 endif()
 
+# Build OpenAL Soft statically for Android.
+# Use the native OpenSL ES audio backend.
+if(ANDROID)
+    include(FetchContent)
+
+    set(LIBTYPE STATIC CACHE STRING "OpenAL Soft library type" FORCE)
+
+    set(ALSOFT_UTILS OFF CACHE BOOL "" FORCE)
+    set(ALSOFT_EXAMPLES OFF CACHE BOOL "" FORCE)
+    set(ALSOFT_TESTS OFF CACHE BOOL "" FORCE)
+    set(ALSOFT_INSTALL OFF CACHE BOOL "" FORCE)
+    set(ALSOFT_INSTALL_CONFIG OFF CACHE BOOL "" FORCE)
+    set(ALSOFT_INSTALL_HRTF_DATA OFF CACHE BOOL "" FORCE)
+    set(ALSOFT_INSTALL_AMBDEC_PRESETS OFF CACHE BOOL "" FORCE)
+    set(ALSOFT_INSTALL_EXAMPLES OFF CACHE BOOL "" FORCE)
+    set(ALSOFT_INSTALL_UTILS OFF CACHE BOOL "" FORCE)
+    set(ALSOFT_UPDATE_BUILD_VERSION OFF CACHE BOOL "" FORCE)
+
+    set(ALSOFT_BACKEND_OBOE OFF CACHE BOOL "" FORCE)
+    set(ALSOFT_BACKEND_OPENSL ON CACHE BOOL "" FORCE)
+    set(ALSOFT_REQUIRE_OPENSL ON CACHE BOOL "" FORCE)
+    set(ALSOFT_BACKEND_SDL2 OFF CACHE BOOL "" FORCE)
+
+    FetchContent_Declare(
+        OpenALSoft
+        GIT_REPOSITORY https://github.com/kcat/openal-soft.git
+        GIT_TAG 1.23.1
+        GIT_SHALLOW TRUE
+    )
+
+    FetchContent_MakeAvailable(OpenALSoft)
+endif()
+
+
 option(${PROJECT}_VENDORED_LIBRW "Use vendored librw" ON)
 if(${PROJECT}_VENDORED_LIBRW)
     if(NOT DEFINED LIBRW_PLATFORM AND NOT PS2)
