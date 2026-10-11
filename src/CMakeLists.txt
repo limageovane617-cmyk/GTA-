@@ -233,6 +233,7 @@ endif()
 
 set_target_properties(${EXECUTABLE}
     PROPERTIES
+        OUTPUT_NAME "revc"
         C_STANDARD 11
         C_EXTENSIONS ${${PROJECT}_C_CXX_EXTENSIONS}
         C_STANDARD_REQUIRED ON
