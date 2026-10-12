@@ -166,40 +166,46 @@ Error(char *fmt, ...)
 }
 #endif
 
-void
-ValidateVersion()
+void ValidateVersion()
 {
-	int32 file = CFileMgr::OpenFile("models\\coll\\peds.col", "rb");
-	char buff[128];
+    int32 file = CFileMgr::OpenFile("models\\coll\\peds.col", "rb");
+    char buff[128] = {};
 
-	if ( file != -1 )
-	{
-		CFileMgr::Seek(file, 100, SEEK_SET);
-		
-		for ( int i = 0; i < 128; i++ )
-		{
-			CFileMgr::Read(file, &buff[i], sizeof(char));
-			buff[i] -= 23;
-			if ( buff[i] == '\0' )
-				break;
-			CFileMgr::Seek(file, 99, SEEK_CUR);
-		}
-		
-		if ( !strncmp(buff, "grandtheftauto3", 15) )
-		{
-			strncpy(version_name, &buff[15], 64);
-			CFileMgr::CloseFile(file);
-			return;
-		}
-	}
+    if (file != -1)
+    {
+        CFileMgr::Seek(file, 100, SEEK_SET);
 
-	LoadingScreen("Invalid version", NULL, NULL);
-	
-	while(true)
-	{
-		;
-	}
+        for (int i = 0; i < 128; i++)
+        {
+            if (CFileMgr::Read(file, &buff[i], sizeof(char)) != sizeof(char))
+                break;
+
+            buff[i] -= 23;
+
+            if (buff[i] == '\0')
+                break;
+
+            CFileMgr::Seek(file, 99, SEEK_CUR);
+        }
+
+        if (!strncmp(buff, "grandtheftauto3", 15))
+        {
+            strncpy(version_name, &buff[15], 64);
+            version_name[63] = '\0';
+            CFileMgr::CloseFile(file);
+            return;
+        }
+
+        CFileMgr::CloseFile(file);
+    }
+
+    LoadingScreen("Invalid version", NULL, NULL);
+
+    // A versão não foi reconhecida.
+    // Não entrar em um loop infinito.
+    return;
 }
+
 
 bool
 DoRWStuffStartOfFrame(int16 TopRed, int16 TopGreen, int16 TopBlue, int16 BottomRed, int16 BottomGreen, int16 BottomBlue, int16 Alpha)
